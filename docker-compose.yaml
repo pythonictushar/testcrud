@@ -5,16 +5,14 @@ services:
     build: .
     container_name: crud-app
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-    volumes:
-      - .:/crud
-    # volumes:
-    #   - ./crud
-    #   - ./migrations:/crud/migrations    # 👈 mount migrations folder
-    #   - ./alembic.ini:/crud/alembic.ini  # 👈 optional but recommended
     ports:
       - "8000:8000"
-    # depends_on:
-    #   - db
+    volumes:
+      - .:/crud
+      - ./migrations:/crud/migrations    # 👈 mount migrations folder
+    #   - ./alembic.ini:/crud/alembic.ini  # 👈 optional but recommended
+    depends_on:
+      - db
     #   - redis
     # environment:
     #   - DATABASE_URL=postgresql://postgres:Tkpostsql@db:5432/splitwisedb
@@ -24,30 +22,30 @@ services:
     #   - ACCESS_TOKEN_EXPIRE_MINUTES=30
     #   - ENV PYTHONUNBUFFERED=1
 
-  # db:
-  #   image: postgres:15
-  #   container_name: splitwise-db
-  #   restart: always
-  #   environment:
-  #     POSTGRES_DB: splitwisedb        # ✅ Your DB name
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: Tkpostsql
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
+  db:
+    image: postgres:15
+    container_name: crud_db
+    restart: always
+    environment:
+      POSTGRES_DB: cruddb        # ✅ Your DB name
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Tkpostsql
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-  # pgadmin:
-  #   image: dpage/pgadmin4
-  #   container_name: pgadmin4
-  #   restart: always
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #   ports:
-  #     - "5050:80"
-  #   depends_on:
-  #     - db
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin44
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
 
   # redis:
   #   image: redis:7
@@ -55,6 +53,6 @@ services:
   #   ports:
   #     - "6379:6379"
 
-# volumes:
-#   postgres_data:
-#   pgadmin_data:
+volumes:
+  postgres_data:
+  pgadmin_data:

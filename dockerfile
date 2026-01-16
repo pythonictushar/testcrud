@@ -12,4 +12,4 @@ RUN pip install python-jose[cryptography] passlib[bcrypt]
 COPY . .
 
 # Run app with auto-reload (dev mode)
-# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
